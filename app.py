@@ -11,6 +11,28 @@ class ChristmasDish(db.Model):
     name=db.Column(db.String,name="name")
     description=db.Column(db.String, name="description", nullable=True)
     weight=db.Column(db.Integer,name="weight", nullable=True, index=True)
+    def __str__(self):
+        return str(self.__dict__)
+
+def get_all_christmas_dishes():
+    return ChristmasDish.query.all()
+
+def get_filtered_christmas_dishes():
+    #return ChristmasDish.query.filter(ChristmasDish.weight>100).order_by(ChristmasDish.weight.desc()).all()
+    return ChristmasDish.query.filter(ChristmasDish.weight > 100).order_by(ChristmasDish.weight).all()
+class Product(db.Model):
+    __tablename__="products_sqlalchemy"
+    product_id=db.Column(db.Integer,primary_key=True,autoincrement=True)
+    name=db.Column(db.String)
+    price=db.Column(db.Float)
+    description=db.Column(db.String,nullable=True)
+
+@app.route('/print_dishes')
+def print_dishes():
+    for cd in get_filtered_christmas_dishes():
+    #for cd in get_all_christmas_dishes():
+        print(cd)
+    return "ok"
 
 @app.route('/create_db')
 def create_db():
@@ -29,3 +51,7 @@ if __name__ == '__main__':
 #76. Stwórz nowy projekt we Flask. Dodaj do niego obsługiwaną przez SQLAlchemy klasę encyjną
 #Product posiadająca id,nazwę,cenę i opis. Dodaj ekran którego wywołanie spowoduje stworzenie
 #tabelki w bazie danych. Wejdz na ten ekran i upewnij się że tabelka powstała.
+
+#77.Dodaj sobie produkty do bazy. Dodaj ekran - jak na niego wejdziesz to na konsoli
+#chcemy zobaczyć wydrukowane linia po linii wszystkie produkty ale posortowane
+#malejąco wg. ceny
