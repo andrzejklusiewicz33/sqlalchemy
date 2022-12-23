@@ -60,6 +60,20 @@ def save_dish():
     save_christmas_dish(cd)
     return "ok"
 
+
+def save_product(pr):
+    db.session.add(pr)
+    db.session.commit()
+
+@app.route('/save_product_view')
+def save_product_view():
+    p=Product()
+    p.name="Generator czegośtam"
+    p.price=6969
+    p.description="generuje cośtam"
+    save_product(p)
+    return "ok"
+
 @app.route('/create_db')
 def create_db():
     db.create_all()
