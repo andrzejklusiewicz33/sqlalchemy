@@ -14,6 +14,11 @@ class ChristmasDish(db.Model):
     def __str__(self):
         return str(self.__dict__)
 
+
+def save_christmas_dish(cd):
+    db.session.add(cd)
+    db.session.commit()
+
 def get_all_christmas_dishes():
     return ChristmasDish.query.all()
 
@@ -26,12 +31,33 @@ class Product(db.Model):
     name=db.Column(db.String)
     price=db.Column(db.Float)
     description=db.Column(db.String,nullable=True)
+    def __str__(self):
+        return str(self.__dict__)
+
+def get_products():
+    return Product.query.order_by(Product.price.desc()).all()
+
+@app.route('/print_products')
+def print_products():
+    for p in get_products():
+        print(p)
+    return "ok"
 
 @app.route('/print_dishes')
 def print_dishes():
     for cd in get_filtered_christmas_dishes():
     #for cd in get_all_christmas_dishes():
         print(cd)
+    return "ok"
+
+
+@app.route('/save_dish')
+def save_dish():
+    cd=ChristmasDish()
+    cd.name="pierogi"
+    cd.weight=2000
+    cd.description="Każdy wie o co kaman z pierogami"
+    save_christmas_dish(cd)
     return "ok"
 
 @app.route('/create_db')
@@ -55,3 +81,7 @@ if __name__ == '__main__':
 #77.Dodaj sobie produkty do bazy. Dodaj ekran - jak na niego wejdziesz to na konsoli
 #chcemy zobaczyć wydrukowane linia po linii wszystkie produkty ale posortowane
 #malejąco wg. ceny
+
+#reportlab
+
+#78. Dodaj ekran po którego wywołaniu do bazy zostanie dodany nowy produkt
